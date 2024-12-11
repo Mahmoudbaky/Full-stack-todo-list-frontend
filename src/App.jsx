@@ -1,11 +1,14 @@
 import React from "react";
-import { TodoListPage } from "./pages";
+import { TodoListPage, SginUp, LogIn } from "./pages";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 const App = () => {
   return (
-    <div>
+    <>
       <TodoListPage />
-    </div>
+      {/* <SginUp /> */}
+      {/* <LogIn /> */}
+    </>
   );
 };
 
