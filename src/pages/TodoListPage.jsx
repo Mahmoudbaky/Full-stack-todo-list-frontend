@@ -32,7 +32,8 @@ const TodoListPage = ({ userId }) => {
     }
   };
 
-  const addTodo = async () => {
+  const addTodo = async (e) => {
+    e.preventDefault(); // dont forget the preventDefault for every single from please :)
     try {
       const response = await axios.post(
         "http://localhost:3001/new-todo",
@@ -45,6 +46,7 @@ const TodoListPage = ({ userId }) => {
           Authorization: `Bearer ${authToken}`,
         }
       );
+      console.log("in add todo function");
     } catch (err) {
       console.log(err);
     }
