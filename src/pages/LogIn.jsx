@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
-const LogIn = () => {
+const LogIn = ({ setUserId }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -24,8 +24,9 @@ const LogIn = () => {
         { withCredentials: true }
       );
       setMessage("Login successful");
+      setUserId(response.data.user.id);
       console.log(message);
-      console.log(response.data.user);
+      // console.log(response.data.user.id);
 
       // You can handle successful login logic here (e.g., redirect, save token)
     } catch (error) {

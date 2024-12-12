@@ -5,10 +5,11 @@ import { NavBar, Footer } from "../components";
 import { IoAddOutline } from "react-icons/io5";
 import axios from "axios";
 
-const TodoListPage = () => {
-  const todos = ["Learn React", "Learn Tailwind", "Learn Redux"];
+const TodoListPage = ({ userId }) => {
+  // const todos = ["Learn React", "Learn Tailwind", "Learn Redux"];
 
   const [tasks, setTasks] = useState([]);
+  const [task, setTask] = useState("");
 
   const fetchTasks = async () => {
     try {
@@ -17,6 +18,26 @@ const TodoListPage = () => {
       });
       setTasks(fetchedTasks.data);
       console.log(fetchedTasks.data);
+      // console.log(task);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addTodo = async () => {
+    try {
+      console.log(userId);
+      const response = await axios.post(
+        "http://localhost:3001/new-todo",
+        {
+          userId,
+          task,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      // console.log(response.data);
     } catch (err) {
       console.log(err);
     }
@@ -49,23 +70,24 @@ const TodoListPage = () => {
       >
         <div className="w-full   flex flex-row justify-between">
           <h1 className="text-3xl font-bold  text-white">Todo</h1>
-
-          <button className="btn btn-circle shadow-2xl">
-            <IoAddOutline />
-          </button>
         </div>
         <form
-          action=""
           className="flex items-center gap-4 mt-8"
-          onSubmit={() => {}}
+          onSubmit={addTodo}
+          method="post"
         >
-          <div>
-            <input
-              type="text"
-              placeholder="Enter your task"
-              className="w-[300px] md:w-[400px] xl:w-[500px] p-3 border-2 border-gray-300 rounded-xl outline-none shadow-2xl focus:border-base-300"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Enter your task"
+            className="w-[300px] md:w-[400px] xl:w-[500px] p-3 border-2 border-gray-300 rounded-xl outline-none shadow-2xl focus:border-base-300"
+            onChange={(e) => {
+              setTask(e.target.value);
+              console.log(task);
+            }}
+          />
+          <button type="submit" className="btn btn-circle shadow-2xl">
+            <IoAddOutline />
+          </button>
         </form>
 
         <div className="mt-8">
