@@ -23,10 +23,13 @@ const LogIn = ({ setUserId }) => {
         // this for headers
         { withCredentials: true }
       );
+      const { token } = response.data;
+      localStorage.setItem("authToken", token);
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUserId(decodedToken.id);
       setMessage("Login successful");
-      setUserId(response.data.user.id);
+      console.log("Login successful:", response.data);
       console.log(message);
-      // console.log(response.data.user.id);
 
       // You can handle successful login logic here (e.g., redirect, save token)
     } catch (error) {

@@ -5,6 +5,10 @@ import { NavBar, Footer } from "../components";
 import { IoAddOutline } from "react-icons/io5";
 import axios from "axios";
 
+const authToken = localStorage.getItem("authToken");
+
+console.log(authToken);
+
 const TodoListPage = ({ userId }) => {
   // const todos = ["Learn React", "Learn Tailwind", "Learn Redux"];
 
@@ -13,12 +17,16 @@ const TodoListPage = ({ userId }) => {
 
   const fetchTasks = async () => {
     try {
-      const fetchedTasks = await axios.get("http://localhost:3001/todos", {
-        withCredentials: true,
-      });
+      const fetchedTasks = await axios.get(
+        "http://localhost:3001/todos",
+
+        {
+          withCredentials: true,
+          Authorization: `Bearer ${authToken}`,
+        }
+      );
       setTasks(fetchedTasks.data);
       console.log(fetchedTasks.data);
-      // console.log(task);
     } catch (err) {
       console.log(err);
     }
@@ -26,7 +34,6 @@ const TodoListPage = ({ userId }) => {
 
   const addTodo = async () => {
     try {
-      console.log(userId);
       const response = await axios.post(
         "http://localhost:3001/new-todo",
         {
@@ -35,9 +42,9 @@ const TodoListPage = ({ userId }) => {
         },
         {
           withCredentials: true,
+          Authorization: `Bearer ${authToken}`,
         }
       );
-      // console.log(response.data);
     } catch (err) {
       console.log(err);
     }
@@ -69,9 +76,10 @@ const TodoListPage = ({ userId }) => {
         className="absolute inset-0 flex flex-col items-center justify-start z-40 top-[190px] max-w-[500px] mx-auto"
       >
         <div className="w-full   flex flex-row justify-between">
-          <h1 className="text-3xl font-bold  text-white">Todo</h1>
+          <h1 className="text-3xl font-bold text-white">Todo</h1>
         </div>
         <form
+          action=""
           className="flex items-center gap-4 mt-8"
           onSubmit={addTodo}
           method="post"
@@ -82,7 +90,6 @@ const TodoListPage = ({ userId }) => {
             className="w-[300px] md:w-[400px] xl:w-[500px] p-3 border-2 border-gray-300 rounded-xl outline-none shadow-2xl focus:border-base-300"
             onChange={(e) => {
               setTask(e.target.value);
-              console.log(task);
             }}
           />
           <button type="submit" className="btn btn-circle shadow-2xl">
@@ -97,7 +104,7 @@ const TodoListPage = ({ userId }) => {
                 key={task._id}
                 className="w-[300px] md:w-[400px] xl:w-[500px] flex items-center gap-4 p-3 bg-white shadow-2xl rounded-xl"
               >
-                <input type="checkbox" className="w-5 h-5 " />
+                <input type="checkbox" className="w-5 h-5" />
                 <p>{task.text}</p>
               </li>
             ))}
@@ -105,7 +112,7 @@ const TodoListPage = ({ userId }) => {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </section>
   );
 };
