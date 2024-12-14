@@ -3,30 +3,23 @@ import desk from "../assets/desk.jpg";
 import { useEffect, useState } from "react";
 import { NavBar, Footer } from "../components";
 import { IoAddOutline } from "react-icons/io5";
+import { TiTick } from "react-icons/ti";
 import axios from "axios";
 
 const authToken = localStorage.getItem("authToken");
 
-console.log(authToken);
-
-const TodoListPage = ({ userId }) => {
-  // const todos = ["Learn React", "Learn Tailwind", "Learn Redux"];
-
+const TodoListPage = () => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
 
   const fetchTasks = async () => {
     try {
-      const fetchedTasks = await axios.get(
-        "http://localhost:3001/todos",
-
-        {
-          withCredentials: true,
+      const fetchedTasks = await axios.get("http://localhost:3001/todos", {
+        headers: {
           Authorization: `Bearer ${authToken}`,
-        }
-      );
+        },
+      });
       setTasks(fetchedTasks.data);
-      console.log(fetchedTasks.data);
     } catch (err) {
       console.log(err);
     }
@@ -34,19 +27,75 @@ const TodoListPage = ({ userId }) => {
 
   const addTodo = async (e) => {
     e.preventDefault(); // dont forget the preventDefault for every single from please :)
+
     try {
       const response = await axios.post(
         "http://localhost:3001/new-todo",
         {
-          userId,
           task,
         },
         {
-          withCredentials: true,
-          Authorization: `Bearer ${authToken}`,
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
         }
       );
+
+      if (response.status === 200) {
+        setTasks((prevTasks) => [...prevTasks, response.data.data]);
+        setTask(""); // it is not working for some reason, I will fix it later :)
+      }
       console.log("in add todo function");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const taskDone = async (id, isTrue) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3001/update-todo/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      if (!isTrue) {
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === id ? { ...task, completed: true } : task
+          )
+        );
+      } else {
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === id ? { ...task, completed: false } : task
+          )
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteCompleted = async () => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:3001/delete-completed",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setTasks((prevTasks) =>
+          prevTasks.filter((task) => task.completed === false)
+        );
+      }
     } catch (err) {
       console.log(err);
     }
@@ -60,7 +109,7 @@ const TodoListPage = ({ userId }) => {
   return (
     <section id="todo-page" className="relative">
       <div id="nav-image" className="relative">
-        <div className="absolute top-0 left-0 right-0 z-20">
+        <div className="top-0 left-0 right-0 z-20 sticky ">
           <NavBar />
         </div>
         <div className="relative">
@@ -106,11 +155,30 @@ const TodoListPage = ({ userId }) => {
                 key={task._id}
                 className="w-[300px] md:w-[400px] xl:w-[500px] flex items-center gap-4 p-3 bg-white shadow-2xl rounded-xl"
               >
-                <input type="checkbox" className="w-5 h-5" />
-                <p>{task.text}</p>
+                {task.completed ? (
+                  <button
+                    className="bg-base-300  btn btn-circle"
+                    onClick={() => taskDone(task._id, task.completed)}
+                  >
+                    <TiTick />
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-circle  cursor-default"
+                    onClick={() => taskDone(task._id, task.completed)}
+                  ></button>
+                )}
+                {task.completed ? (
+                  <p className="line-through">{task.text}</p>
+                ) : (
+                  <p>{task.text}</p>
+                )}
               </li>
             ))}
           </ul>
+          <button className="btn mx-auto" onClick={deleteCompleted}>
+            Clear Completed
+          </button>
         </div>
       </div>
 

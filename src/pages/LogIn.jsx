@@ -1,13 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
-const LogIn = ({ setUserId }) => {
+const LogIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  const [wrongCredentials, setWrongCredentials] = useState(false);
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const navigate = useNavigate();
+
+  const showParagraph = () => {
+    setIsVisible(true);
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 5000);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,11 +38,22 @@ const LogIn = ({ setUserId }) => {
       );
       const { token } = response.data;
       localStorage.setItem("authToken", token);
-      const decodedToken = JSON.parse(atob(token.split(".")[1]));
-      setUserId(decodedToken.id);
-      setMessage("Login successful");
-      console.log("Login successful:", response.data);
-      console.log(message);
+      // const decodedToken = JSON.parse(atob(token.split(".")[1]));
+
+      if (response.data.passwordMatch || response.data.userExist) {
+        showParagraph();
+        navigate("/login");
+        console.log("The username or password you entered is incorrect");
+        setWrongCredentials(true);
+        return;
+      }
+
+      if (response.status === 200) {
+        navigate("/todo-page");
+        setMessage("Login successful");
+        console.log("Login successful:", response.data);
+        console.log(message);
+      }
 
       // You can handle successful login logic here (e.g., redirect, save token)
     } catch (error) {
@@ -64,11 +88,28 @@ const LogIn = ({ setUserId }) => {
 
           <button
             type="submit"
-            className="btn btn-wide self-center block mx-auto"
+            className="btn btn-wide self-center flex mx-auto"
           >
             Login
           </button>
+
+          {isVisible && wrongCredentials && (
+            <p className="text-red-600 mt-4">
+              The username or password you entered is incorrect
+            </p>
+          )}
         </form>
+
+        <div className="text-grey-dark mt-6">
+          You don't have an account?
+          <Link
+            to="/signup"
+            className="no-underline border-b border-blue text-blue"
+          >
+            {" Sign Up"}
+          </Link>
+          .
+        </div>
       </div>
     </div>
   );

@@ -11,9 +11,11 @@ const App = () => {
 
   return (
     <>
-      <TodoListPage userId={userId} />
-      {/* <SginUp /> */}
-      {/* <LogIn setUserId={setUserId} /> */}
+      <Routes>
+        <Route path="/" element={<SginUp />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/todo-page" element={<TodoListPage userId={userId} />} />
+      </Routes>
     </>
   );
 };
