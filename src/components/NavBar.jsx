@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DarkMode } from "./index";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -7,7 +7,11 @@ const authToken = localStorage.getItem("authToken");
 
 const NavBar = () => {
   const navigate = useNavigate();
+
+  // const [loading, setLoading] = useState(false); // Add loading state
+
   const handleLogout = async () => {
+    // setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:3001/logout",
@@ -26,8 +30,18 @@ const NavBar = () => {
       }
     } catch (err) {
       console.log(err);
-    }
+    } finally {
+      // setLoading(false);
+    } // Set loading to false after request is complete }
   };
+
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-screen">
+  //       <span className="loading loading-dots loading-lg"></span>
+  //     </div>
+  //   );
+  // } // Render loading spinner while loading
 
   return (
     <nav className="navbar bg-transparent fixed z-[999] px-6 py-4 border-b border-gray-400">
