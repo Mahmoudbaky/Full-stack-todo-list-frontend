@@ -8,7 +8,7 @@ import axios from "axios";
 
 const authToken = localStorage.getItem("authToken");
 
-const TodoListPage = ({ authToken }) => {
+const TodoListPage = ({ authToken, userName }) => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
 
@@ -114,7 +114,7 @@ const TodoListPage = ({ authToken }) => {
     <section id="todo-page" className="relative">
       <div id="nav-image" className="relative">
         <div className="top-0 left-0 right-0 z-20 sticky ">
-          <NavBar />
+          <NavBar userName={userName} />
         </div>
         <div className="relative">
           <img

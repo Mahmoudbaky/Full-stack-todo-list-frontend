@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { TodoListPage, SginUp, LogIn } from "./pages";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import { use } from "react";
 
 const App = () => {
-  const [userId, setUserId] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState(
+    localStorage.getItem("username") || ""
+  );
 
   const [authToken, setAuthToken] = useState(
     localStorage.getItem("authToken") || ""
@@ -15,8 +17,13 @@ const App = () => {
   useEffect(() => {
     if (authToken) {
       localStorage.setItem("authToken", authToken);
+
+      const decodedToken = jwtDecode(authToken);
+      const storedUsername = decodedToken.username;
+      setUserName(storedUsername);
     } else {
       localStorage.removeItem("authToken");
+      localStorage.removeItem("username");
     }
     setIsAuthenticated(!!authToken);
   }, [authToken]);
@@ -25,12 +32,17 @@ const App = () => {
     <>
       <Routes>
         <Route path="/" element={<SginUp />} />
-        <Route path="/login" element={<LogIn setAuthToken={setAuthToken} />} />
+        <Route
+          path="/login"
+          element={
+            <LogIn setAuthToken={setAuthToken} setUserNameNav={setUserName} />
+          }
+        />
         <Route
           path="/todo-page"
           element={
             isAuthenticated ? (
-              <TodoListPage authToken={authToken} />
+              <TodoListPage authToken={authToken} userName={userName} />
             ) : (
               <LogIn setAuthToken={setAuthToken} />
             )

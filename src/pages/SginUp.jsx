@@ -12,6 +12,8 @@ const SginUp = () => {
   const [userExist, setUserExist] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(false);
 
+  const [loading, setLoading] = useState(false); // Add loading state
+
   const navigate = useNavigate();
 
   const showParagraph = () => {
@@ -25,6 +27,7 @@ const SginUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post("http://localhost:3001/signup", {
         username,
@@ -55,8 +58,18 @@ const SginUp = () => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <span className="loading loading-dots loading-lg"></span>
+      </div>
+    );
+  } // Render loading spinner while loading
 
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">

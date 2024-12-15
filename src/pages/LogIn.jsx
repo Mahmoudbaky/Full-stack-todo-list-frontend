@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+("jwt-decode");
 
-const LogIn = ({ setAuthToken }) => {
+const LogIn = ({ setAuthToken, setUserNameNav }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -40,7 +42,7 @@ const LogIn = ({ setAuthToken }) => {
       const { token } = response.data;
       setAuthToken(token);
       localStorage.setItem("authToken", token);
-      // const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      const decodedToken = jwtDecode(token);
 
       if (response.data.passwordMatch || response.data.userExist) {
         showParagraph();
@@ -53,6 +55,8 @@ const LogIn = ({ setAuthToken }) => {
       if (response.status === 200) {
         navigate("/todo-page");
         setMessage("Login successful");
+        setUserNameNav(decodedToken.username); // ???
+        localStorage.setItem("username", decodedToken.username);
         console.log("Login successful:", response.data);
         // console.log(message);
       }
