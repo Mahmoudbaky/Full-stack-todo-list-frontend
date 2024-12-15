@@ -8,7 +8,7 @@ import axios from "axios";
 
 const authToken = localStorage.getItem("authToken");
 
-const TodoListPage = () => {
+const TodoListPage = ({ authToken }) => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
 
@@ -43,9 +43,11 @@ const TodoListPage = () => {
 
       if (response.status === 200) {
         setTasks((prevTasks) => [...prevTasks, response.data.data]);
-        setTask(""); // it is not working for some reason, I will fix it later :)
+        setTask((prev) => {
+          prev = "";
+        }); // it is not working for some reason, I will fix it later :)
       }
-      console.log("in add todo function");
+      // console.log("in add todo function");
     } catch (err) {
       console.log(err);
     }
@@ -103,8 +105,10 @@ const TodoListPage = () => {
 
   // useEffect accpets only normal pracitce
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    if (authToken) {
+      fetchTasks();
+    }
+  }, [authToken]);
 
   return (
     <section id="todo-page" className="relative">
