@@ -28,7 +28,7 @@ const LogoutButton = () => {
         }, 1000);
       }
     } catch (err) {
-      console.log(err);
+      err;
       setLoading(false);
     }
   };

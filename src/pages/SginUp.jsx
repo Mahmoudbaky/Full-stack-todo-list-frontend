@@ -35,10 +35,10 @@ const SginUp = () => {
         repassword,
       });
 
-      console.log(response.data);
+      response.data;
 
       if (response.data.userExist) {
-        navigate("/signup");
+        navigate("/");
         showParagraph();
         setUserExist(response.data.userExist);
         setPasswordMatch(false);
@@ -46,7 +46,7 @@ const SginUp = () => {
       }
 
       if (response.data.passwordConfirm) {
-        navigate("/signup");
+        navigate("/");
         showParagraph();
         setPasswordMatch(response.data.passwordConfirm);
         setUserExist(false);

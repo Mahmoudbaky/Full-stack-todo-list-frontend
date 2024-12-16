@@ -47,7 +47,7 @@ const LogIn = ({ setAuthToken, setUserNameNav }) => {
       if (response.data.passwordMatch || response.data.userExist) {
         showParagraph();
         navigate("/login");
-        console.log("The username or password you entered is incorrect");
+        ("The username or password you entered is incorrect");
         setWrongCredentials(true);
         return;
       }
@@ -57,13 +57,13 @@ const LogIn = ({ setAuthToken, setUserNameNav }) => {
         setMessage("Login successful");
         setUserNameNav(decodedToken.username); // ???
         localStorage.setItem("username", decodedToken.username);
-        console.log("Login successful:", response.data);
-        // console.log(message);
+        "Login successful:", response.data;
+        // (message);
       }
 
       // You can handle successful login logic here (e.g., redirect, save token)
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     } finally {
       setLoading(false);
     } // Set loading to false after request is complete }
