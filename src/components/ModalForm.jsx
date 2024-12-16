@@ -15,12 +15,14 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
     } else if (modalRef.current) {
       modalRef.current.close();
     }
-  }, [isModalVisible, todo]);
+  }, [isModalVisible]);
 
   const handleSubmit = (e) => {
-    console.log(todo);
+    console.log(inputText);
+    const updatedTodo = { ...todo, text: inputText };
+    // console.log(updatedTodo);
     e.preventDefault();
-    onSubmit({ ...todo, inputText });
+    onSubmit(updatedTodo);
     onClose();
   };
 
@@ -38,6 +40,7 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
           onSubmit={handleSubmit}
         >
           <input
+            type="text"
             className="block border border-grey-light w-full p-3 rounded-full mb-4"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}

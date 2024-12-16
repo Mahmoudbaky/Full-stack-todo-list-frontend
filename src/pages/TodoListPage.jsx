@@ -117,18 +117,16 @@ const TodoListPage = ({ authToken, userName }) => {
 
   const updateTodo = async (updatedTodo) => {
     try {
-      text = updatedTodo.text;
-      console.log(text);
-
+      console.log(updatedTodo);
       const response = await axios.put(
-        `http://localhost:3001/update/${updatedTodo._id}`,
-        { text },
+        `http://localhost:3001/update`,
+        { updatedTodo },
         { headers: { Authorization: `Bearer ${authToken}` } }
       );
       setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task._id === updatedTodo._id ? response.data : task
-        )
+        prevTasks.map((task) => {
+          task._id === updatedTodo._id ? updatedTodo : task;
+        })
       );
     } catch (error) {
       console.error("Error updating todo:", error);
@@ -190,9 +188,9 @@ const TodoListPage = ({ authToken, userName }) => {
         {/* Add the list of tasks here */}
         <div className="mt-8 flex flex-col items-center justify-center">
           <ul className="space-y-4">
-            {tasks.map((task) => (
+            {tasks.map((task, index) => (
               <li
-                key={task._id}
+                key={index}
                 className="w-[300px] md:w-[400px] xl:w-[500px] flex items-center justify-between gap-4 p-3 bg-white shadow-2xl rounded-xl"
               >
                 <div className="flex items-center gap-4">
