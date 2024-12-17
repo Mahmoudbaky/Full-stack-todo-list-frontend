@@ -5,6 +5,7 @@ import { NavBar, Footer, ModalForm } from "../components";
 import { IoAddOutline } from "react-icons/io5";
 import { TiTick } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
+import { IoMdTrash } from "react-icons/io";
 import axios from "axios";
 
 const authToken = localStorage.getItem("authToken");
@@ -117,19 +118,36 @@ const TodoListPage = ({ authToken, userName }) => {
 
   const updateTodo = async (updatedTodo) => {
     try {
-      console.log(updatedTodo);
+      // console.log(updatedTodo);
       const response = await axios.put(
         `http://localhost:3001/update`,
         { updatedTodo },
         { headers: { Authorization: `Bearer ${authToken}` } }
       );
       setTasks((prevTasks) =>
-        prevTasks.map((task) => {
-          task._id === updatedTodo._id ? updatedTodo : task;
-        })
+        prevTasks.map((task) =>
+          task._id === updatedTodo._id ? updatedTodo : task
+        )
       );
     } catch (error) {
       console.error("Error updating todo:", error);
+    }
+  };
+
+  const deleteTodo = async (task) => {
+    try {
+      console.log(task);
+      const response = await axios.post(
+        `http://localhost:3001/delete-todo/${task._id}`,
+        { task },
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+
+      setTasks((prevTasks) => prevTasks.filter((t) => t._id !== task._id));
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -213,12 +231,22 @@ const TodoListPage = ({ authToken, userName }) => {
                     <p>{task.text}</p>
                   )}
                 </div>
-                <button
-                  className="btn btn-circle"
-                  onClick={() => openEditModal(task)}
-                >
-                  <CiEdit className="text-xl" />
-                </button>
+                <div className=" flex gap-3">
+                  <button
+                    className="btn btn-circle"
+                    onClick={() => {
+                      deleteTodo(task);
+                    }}
+                  >
+                    <IoMdTrash className="text-xl" />
+                  </button>
+                  <button
+                    className="btn btn-circle"
+                    onClick={() => openEditModal(task)}
+                  >
+                    <CiEdit className="text-xl" />
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

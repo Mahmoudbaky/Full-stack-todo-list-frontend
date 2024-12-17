@@ -26,6 +26,11 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
     onClose();
   };
 
+  const closeDialog = (e) => {
+    e.preventDefault();
+    onClose();
+  };
+
   return (
     <dialog
       id="my_modal_5"
@@ -36,7 +41,7 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
         <h3 className="font-bold text-lg">Edit task</h3>
         <form
           method="post"
-          className="p-3 flex justify-between space-x-6"
+          className="p-3 flex justify-center items-center flex-col space-x-6"
           onSubmit={handleSubmit}
         >
           <input
@@ -45,9 +50,14 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
           />
-          <button className="btn" type="submit">
-            save changes
-          </button>
+          <div className="flex gap-4 self-end">
+            <button className="btn" onClick={closeDialog}>
+              cancel
+            </button>
+            <button className="btn" type="submit">
+              save changes
+            </button>
+          </div>
         </form>
       </div>
     </dialog>
