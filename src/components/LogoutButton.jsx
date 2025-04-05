@@ -8,11 +8,13 @@ const LogoutButton = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const backendUrl = import.meta.env.BACKEND_URL || "http://localhost:3001";
+
   const handleLogout = async () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3001/logout",
+        `${backendUrl}/logout`,
         {},
         {
           headers: {

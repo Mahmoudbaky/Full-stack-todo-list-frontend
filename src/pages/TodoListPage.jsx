@@ -14,9 +14,11 @@ const TodoListPage = ({ authToken, userName }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentTask, setCurrentTask] = useState({});
 
+  const backendUrl = import.meta.env.BACKEND_URL || "http://localhost:3001";
+
   const fetchTasks = async () => {
     try {
-      const fetchedTasks = await axios.get("http://localhost:3001/todos", {
+      const fetchedTasks = await axios.get(`${backendUrl}/todos`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -32,7 +34,7 @@ const TodoListPage = ({ authToken, userName }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/new-todo",
+        `${backendUrl}/new-todo`,
         {
           task,
         },
@@ -57,7 +59,7 @@ const TodoListPage = ({ authToken, userName }) => {
   const taskDone = async (id, isTrue) => {
     try {
       const response = await axios.put(
-        `http://localhost:3001/update-todo/${id}`,
+        `${backendUrl}/update-todo/${id}`,
         {},
         {
           headers: {
@@ -85,14 +87,11 @@ const TodoListPage = ({ authToken, userName }) => {
 
   const deleteCompleted = async () => {
     try {
-      const response = await axios.delete(
-        "http://localhost:3001/delete-completed",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const response = await axios.delete(`${backendUrl}/delete-completed`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
       if (response.status === 200) {
         setTasks((prevTasks) =>
@@ -118,7 +117,7 @@ const TodoListPage = ({ authToken, userName }) => {
   const updateTodo = async (updatedTodo) => {
     try {
       const response = await axios.put(
-        `http://localhost:3001/update`,
+        `${backendUrl}/update`,
         { updatedTodo },
         { headers: { Authorization: `Bearer ${authToken}` } }
       );
@@ -136,7 +135,7 @@ const TodoListPage = ({ authToken, userName }) => {
     try {
       console.log(task);
       const response = await axios.post(
-        `http://localhost:3001/delete-todo/${task._id}`,
+        `${backendUrl}/delete-todo/${task._id}`,
         { task },
         {
           headers: { Authorization: `Bearer ${authToken}` },

@@ -16,6 +16,8 @@ const LogIn = ({ setAuthToken, setUserNameNav }) => {
 
   const [loading, setLoading] = useState(false); // Add loading state
 
+  const backendUrl = import.meta.env.BACKEND_URL || "http://localhost:3001";
+
   const navigate = useNavigate();
 
   const showParagraph = () => {
@@ -30,7 +32,7 @@ const LogIn = ({ setAuthToken, setUserNameNav }) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3001/login",
+        `${backendUrl}/login`,
         // this is body
         {
           username,
