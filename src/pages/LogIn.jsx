@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -58,7 +58,6 @@ const LogIn = ({ setAuthToken, setUserNameNav }) => {
         setUserNameNav(decodedToken.username); // ???
         localStorage.setItem("username", decodedToken.username);
         "Login successful:", response.data;
-        // (message);
       }
 
       // You can handle successful login logic here (e.g., redirect, save token)

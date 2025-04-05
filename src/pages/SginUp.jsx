@@ -107,7 +107,6 @@ const SginUp = () => {
           />
 
           <button
-            // href={passwordMatch || userExist ? "/signup" : "/login"}
             type="submit"
             className="btn btn-wide self-center flex mx-auto "
           >

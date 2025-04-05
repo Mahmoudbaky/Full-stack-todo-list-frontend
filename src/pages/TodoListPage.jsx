@@ -8,8 +8,6 @@ import { CiEdit } from "react-icons/ci";
 import { IoMdTrash } from "react-icons/io";
 import axios from "axios";
 
-const authToken = localStorage.getItem("authToken");
-
 const TodoListPage = ({ authToken, userName }) => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
@@ -47,7 +45,8 @@ const TodoListPage = ({ authToken, userName }) => {
 
       if (response.status === 200) {
         setTasks((prevTasks) => [...prevTasks, response.data.data]);
-        setTask(""); // it is not working for some reason, I will fix it later :)
+        setTask("");
+        console.log(task);
       }
       // ("in add todo function");
     } catch (err) {
@@ -118,7 +117,6 @@ const TodoListPage = ({ authToken, userName }) => {
 
   const updateTodo = async (updatedTodo) => {
     try {
-      // console.log(updatedTodo);
       const response = await axios.put(
         `http://localhost:3001/update`,
         { updatedTodo },
@@ -195,6 +193,7 @@ const TodoListPage = ({ authToken, userName }) => {
           </div>
           <input
             type="text"
+            value={task}
             placeholder="Enter your task"
             className="w-[300px] md:w-[400px] xl:w-[500px] p-3 border-2 border-gray-300 rounded-xl outline-none shadow-2xl focus:border-base-300"
             onChange={(e) => {

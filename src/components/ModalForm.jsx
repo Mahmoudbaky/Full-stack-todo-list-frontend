@@ -5,8 +5,6 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
 
   const [inputText, setInputText] = useState("");
 
-  // console.log(todo.text);
-
   useEffect(() => {
     console.log("Dialog visibility changed:", isModalVisible);
     if (isModalVisible) {
@@ -20,7 +18,7 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
   const handleSubmit = (e) => {
     console.log(inputText);
     const updatedTodo = { ...todo, text: inputText };
-    // console.log(updatedTodo);
+
     e.preventDefault();
     onSubmit(updatedTodo);
     onClose();
