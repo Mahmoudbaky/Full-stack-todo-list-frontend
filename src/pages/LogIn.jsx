@@ -16,7 +16,8 @@ const LogIn = ({ setAuthToken, setUserNameNav }) => {
 
   const [loading, setLoading] = useState(false); // Add loading state
 
-  const backendUrl = import.meta.env.BACKEND_URL || "http://localhost:3001";
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:3001";
 
   const navigate = useNavigate();
 

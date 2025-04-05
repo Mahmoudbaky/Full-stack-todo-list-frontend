@@ -14,7 +14,8 @@ const TodoListPage = ({ authToken, userName }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentTask, setCurrentTask] = useState({});
 
-  const backendUrl = import.meta.env.BACKEND_URL || "http://localhost:3001";
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:3001";
 
   const fetchTasks = async () => {
     try {
