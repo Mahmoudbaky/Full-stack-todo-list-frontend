@@ -21,6 +21,7 @@ const LogoutButton = () => {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
+          withCredentials: true,
         }
       );
 
