@@ -49,7 +49,6 @@ const TodoListPage = ({ authToken, userName }) => {
       if (response.status === 200) {
         setTasks((prevTasks) => [...prevTasks, response.data.data]);
         setTask("");
-        console.log(task);
       }
       // ("in add todo function");
     } catch (err) {
@@ -134,7 +133,6 @@ const TodoListPage = ({ authToken, userName }) => {
 
   const deleteTodo = async (task) => {
     try {
-      console.log(task);
       const response = await axios.post(
         `${backendUrl}/delete-todo/${task._id}`,
         { task },
@@ -159,7 +157,7 @@ const TodoListPage = ({ authToken, userName }) => {
   return (
     <section id="todo-page" className="relative">
       <div id="nav-image" className="relative">
-        <div className="top-0 left-0 right-0 z-20 sticky ">
+        <div className="sticky top-0 left-0 right-0 z-20 ">
           <NavBar userName={userName} />
         </div>
         <div className="relative">
@@ -179,15 +177,15 @@ const TodoListPage = ({ authToken, userName }) => {
         {/* Add the form to add a new task here */}
         <form
           action=""
-          className="flex items-center gap-4 mt-8 flex-col"
+          className="flex flex-col items-center gap-4 mt-8"
           onSubmit={addTodo}
           method="post"
         >
           <div className="flex items-center gap-4 justify-between w-[300px] md:w-[400px] xl:w-[500px]">
-            <div className="w-full   flex flex-row justify-between">
+            <div className="flex flex-row justify-between w-full">
               <h1 className="text-3xl font-bold text-white">Todo</h1>
             </div>
-            <button type="submit" className="btn btn-circle shadow-2xl">
+            <button type="submit" className="shadow-2xl btn btn-circle">
               <IoAddOutline />
             </button>
           </div>
@@ -203,7 +201,7 @@ const TodoListPage = ({ authToken, userName }) => {
         </form>
 
         {/* Add the list of tasks here */}
-        <div className="mt-8 flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mt-8">
           <ul className="space-y-4">
             {tasks.map((task, index) => (
               <li
@@ -213,24 +211,24 @@ const TodoListPage = ({ authToken, userName }) => {
                 <div className="flex items-center gap-4">
                   {task.completed ? (
                     <button
-                      className="bg-base-300  btn btn-circle"
+                      className="bg-base-300 btn btn-circle"
                       onClick={() => taskDone(task._id, task.completed)}
                     >
                       <TiTick className="text-2xl" />
                     </button>
                   ) : (
                     <button
-                      className="btn btn-circle  cursor-default"
+                      className="cursor-default btn btn-circle"
                       onClick={() => taskDone(task._id, task.completed)}
                     ></button>
                   )}
                   {task.completed ? (
-                    <p className="line-through text-gray-500">{task.text}</p>
+                    <p className="text-gray-500 line-through">{task.text}</p>
                   ) : (
                     <p>{task.text}</p>
                   )}
                 </div>
-                <div className=" flex gap-3">
+                <div className="flex gap-3 ">
                   <button
                     className="btn btn-circle"
                     onClick={() => {
@@ -251,7 +249,7 @@ const TodoListPage = ({ authToken, userName }) => {
           </ul>
           {/* Modal */}
           {tasks && (
-            <button className="btn mx-auto mt-5 ml-0" onClick={deleteCompleted}>
+            <button className="mx-auto mt-5 ml-0 btn" onClick={deleteCompleted}>
               Clear Completed
             </button>
           )}

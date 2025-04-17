@@ -6,7 +6,6 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
   const [inputText, setInputText] = useState("");
 
   useEffect(() => {
-    console.log("Dialog visibility changed:", isModalVisible);
     if (isModalVisible) {
       setInputText(todo.text);
       modalRef.current.showModal();
@@ -16,7 +15,6 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
   }, [isModalVisible]);
 
   const handleSubmit = (e) => {
-    console.log(inputText);
     const updatedTodo = { ...todo, text: inputText };
 
     e.preventDefault();
@@ -36,19 +34,19 @@ const ModalForm = ({ isModalVisible, onSubmit, todo, onClose }) => {
       ref={modalRef}
     >
       <div className="modal-box">
-        <h3 className="font-bold text-lg">Edit task</h3>
+        <h3 className="text-lg font-bold">Edit task</h3>
         <form
           method="post"
-          className="p-3 flex justify-center items-center flex-col space-x-6"
+          className="flex flex-col items-center justify-center p-3 space-x-6"
           onSubmit={handleSubmit}
         >
           <input
             type="text"
-            className="block border border-grey-light w-full p-3 rounded-full mb-4"
+            className="block w-full p-3 mb-4 border rounded-full border-grey-light"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
           />
-          <div className="flex gap-4 self-end">
+          <div className="flex self-end gap-4">
             <button className="btn" onClick={closeDialog}>
               cancel
             </button>
